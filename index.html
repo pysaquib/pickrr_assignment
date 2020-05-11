@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+
+        <!--Injecting jQuery CDN-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        
+        <!--Tailwind CSS for styling elements-->
+        <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <script>
+            const data = 
+            {
+                "clients":[
+                    {
+                        "shop_name":"XYZ",
+                        "token":"29b085934f3e",
+                        "failure_emails":"xyz@gmail.com",
+                        "pickrr_auth_token":"23432432",
+                        "is_multiple_location":false
+                    },
+
+                    {
+                        "shop_name":"ABC",
+                        "token":"a44bed0be26f2bbd985e8b7",
+                        "failure_emails":"”abc@gmail.com”",
+                        "pickrr_auth_token":"4323423",
+                        "is_multiple_location":true
+                    },
+
+                    {
+                        "shop_name":"XYZ",
+                        "token":"29b085934f3e",
+                        "failure_emails":"xyz@gmail.com",
+                        "pickrr_auth_token":"23432432",
+                        "is_multiple_location":false
+                    },
+
+                    {
+                        "shop_name":"PQR",
+                        "token":"29b0859sdsd34f3e",
+                        "failure_emails":"pqr@gmail.com",
+                        "pickrr_auth_token":"2343sdada2432",
+                        "is_multiple_location":false
+                    },
+                ]
+            }
+
+            // Function to create form for each data object
+            function createCard(cardID, classes, style){
+                let card = document.createElement("form")
+                card.setAttribute("id", "card"+cardID)
+                card.setAttribute("method", "get")
+                card.setAttribute("class", classes)
+                card.setAttribute("style", style)
+                return card
+            }
+
+            // Function to create input fields for each form
+            function createInputFields(type, id, classes, placeholder, style, values){
+
+                let mainDiv = document.createElement("div")
+                mainDiv.setAttribute("class", "mb-4")
+
+                let label = document.createElement("label")
+                label.setAttribute("class", "block text-gray-700 text-sm font-bold mb-2")
+                label.setAttribute("for", placeholder)
+                label.innerHTML = placeholder
+
+                let input = document.createElement("input")
+                input.setAttribute("type", type)
+                input.setAttribute("id", id)
+                input.setAttribute("class", classes)
+                input.setAttribute("placeholder", placeholder)
+                input.setAttribute("style", style)
+                input.setAttribute("value", values)
+
+                mainDiv.appendChild(label)
+                mainDiv.appendChild(input)
+                return mainDiv
+            }
+
+            // Function to create dropdown options, appending it to dropdown and returning it
+            function createDropdownOptions(dropdownElement, placeholder, values){
+                let valueObj = {
+                    'true' : 'Yes', 'false' : 'No'
+                }
+                let valueInversion = {
+                    'true' : 'false', 'false' : 'true'
+                }
+
+
+                let mainDiv = document.createElement("div")
+                mainDiv.setAttribute("class", "mb-4")
+ 
+
+                let label = document.createElement("label")
+                label.setAttribute("class", "block text-gray-700 text-sm font-bold mb-2")
+                label.setAttribute("for", placeholder)
+                label.innerHTML = placeholder
+
+                let defaultOption = document.createElement("option")
+                defaultOption.innerHTML = valueObj[values]
+
+                let alternateOption = document.createElement("option")
+                alternateOption.innerHTML = valueObj[valueInversion[values]]
+
+                dropdownElement.appendChild(defaultOption)
+                dropdownElement.appendChild(alternateOption)
+
+                mainDiv.appendChild(label)
+                mainDiv.appendChild(dropdownElement)
+    
+                return mainDiv
+            }
+
+            // Function to create dropdown
+            function createDropdown(type, id, classes, style, placeholder, values){
+
+                let dropdown = document.createElement("select")
+                dropdown.setAttribute("id", id)
+                dropdown.setAttribute("class", classes)
+                dropdown.setAttribute("style", style)
+                
+                return createDropdownOptions(dropdown, placeholder, values)
+            }
+
+            // Function to create Submit button
+            function createSubmitButton(id, type, classes, style, submitHandler){
+
+                let mainDiv = document.createElement("div")
+                mainDiv.setAttribute("class", "lg:w-1/9")
+                mainDiv.setAttribute("style", style)
+
+                let submitButton = document.createElement("button")
+                submitButton.setAttribute("id", id)
+                submitButton.setAttribute("type", "submit")
+                submitButton.setAttribute("class", classes)
+                submitButton.innerHTML = "Submit"
+                
+                mainDiv.appendChild(submitButton)
+                return mainDiv
+            }
+
+            data['clients'].forEach((element, index)=>{
+
+                let card = createCard(index, "w-full lg:max-w-full lg:flex shadow-lg", index%2==0 ? "padding : 20px; margin: 20px 0; background-color: #e0cadf" : "padding : 20px; margin: 20px 0; background-color: #d3ede0")
+                document.body.appendChild(card)
+                
+                let c = document.getElementById("card"+index)
+
+                let shop_name = createInputFields("text", "shop_name", "bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal", "Shop Name", "display: block", element.shop_name)
+                let token = createInputFields("text", "token", "bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal", "Token", "display: block", element.token)
+                let failure_emails = createInputFields("text", "failure_emails", "bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal", "Failure Email", "display: block", element.failure_emails)
+                let pickrr_auth_token = createInputFields("text", "pickrr_auth_token", "bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal", "Pickrr Auth Token", "display: block", element.pickrr_auth_token)
+                let is_multiple_location = createDropdown("select", "is_multiple_location", "block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500", "display: block", "Is Multiple Location?", element.is_multiple_location)
+                let submit_button = createSubmitButton("submit", "submit", "shadow bg-purple-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded", "margin: 30px 0 0 15px")
+
+                c.appendChild(shop_name)
+                c.appendChild(token)
+                c.appendChild(failure_emails)
+                c.appendChild(pickrr_auth_token)
+                c.appendChild(is_multiple_location)
+                c.appendChild(submit_button)
+            })
+
+            data['clients'].forEach((ele, index)=>{
+                $('#card'+index.toString()).submit(function(e){
+                    e.preventDefault()
+                    let c = '#card'+index.toString()+' :input'
+                    var inputs = $(c)
+                    
+                    let [shopName, token, failureEmail, pickrrAuthToken, isMultipleLocation] = [inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value == 'No' ? 0 : 1]
+                    
+                    $.ajax({
+                        url:`https://pickrr.herokuapp.com/xyz/?shop_name=${shopName}&failure_emails=${failureEmail}&pickrr_auth_token=${pickrrAuthToken}&token=${token}&is_multiple_location=${isMultipleLocation}`,
+                        type: "GET",
+                        success : function(result){
+                            console.log(result);
+                        },
+                        error : function(error){
+                            console.log(error);
+                        }
+                    })
+                })
+            })
+
+        </script>
+    </body>
+</html>
